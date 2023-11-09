@@ -5,17 +5,21 @@ void cleanupTextEditor(TextContent *editor)
 {
 	Line *currentLine, *nextLine;
 
+	if (!editor)
+		return;
+
 	currentLine = editor->firstLine;
 
 	while (currentLine)
 	{
-		nextLine = currentLine;
-		currentLine = currentLine->next;
-		free(nextLine->text);
-		free(nextLine);
+		nextLine = currentLine->next;
+
+		free(currentLine->text);
+		free(currentLine);
+		currentLine = nextLine;
 	}
 
-	free(editor);
-
-	return;
+	editor->firstLine = NULL;
+	editor->lastLine = NULL;
+	editor->numLines = 0;
 }

@@ -18,7 +18,7 @@ void displayText(const TextContent *text)
 
 	while (currentLine)
 	{
-		printf("%s\n", currentLine->text);
+		printf("%s", currentLine->text);
 		currentLine = currentLine->next;
 	}
 }

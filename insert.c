@@ -11,41 +11,52 @@
  */
 void insertText(TextContent *text, int position, const char *line)
 {
-	char *newLine;
+	Line *newLine, *prevLine;
 	int i;
-
+	
 	if (!text || !line)
 		return;
-
-	if (position < 0 || position > text->numLines)
+	
+	if (position < 0)
+		position = 0;
+	
+	if (position > text->numLines)
+		position = text->numLines;
+	
+	newLine = malloc(sizeof(Line));
+	
+	if (!newLine)
 		return;
-
-	newLine = malloc(sizeof(char) * (strlen(line) + 1));
-
-	if(!newLine)
-		return;
-
-	strcpy(newLine, line);
-
-	if (position == text->numLines)
+	
+	newLine->text = strdup(line);
+	newLine->next = NULL;
+	
+	if (position == 0)
 	{
-		text->lastLine = realloc(text->lastLine, (text->numLines + 2) * sizeof(char *));
+		newLine->next = text->firstLine;
+		text->firstLine = newLine;
 		
-		if (!text->lastLine)
-			return;
-
-		text->lastLine[text->numLines] = newLine;
-		text->lastLine[text->numLines + 1] = NULL;
-		text->numLines++;
-		return;
-
+		if (text->numLines == 0)
+		{
+			text->lastLine = newLine;
+		}
 	}
-
-	for (i = text->numLines; i > position; i--)
+	else if (position == text->numLines)
 	{
-		text->lastLine[i] = text->lastLine[i - 1];
+		text->lastLine->next = newLine;
+		text->lastLine = newLine;
 	}
-
-	text->lastLine[position] = newLine;
+	else
+	{
+		prevLine = text->firstLine;
+		
+		for (i = 0; i < position - 1; i++)
+		{
+			prevLine = prevLine->next;
+		}
+		newLine->next = prevLine->next;
+		prevLine->next = newLine;
+	}
+	
 	text->numLines++;
 }
