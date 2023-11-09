@@ -9,6 +9,9 @@
  */
 void initializeTextEditor(TextContent *editor)
 {
+	if (!editor)
+		return;
+
 	editor->firstLine = NULL;
 	editor->lastLine = NULL;
 	editor->numLines = 0;
