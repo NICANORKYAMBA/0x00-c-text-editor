@@ -1,5 +1,7 @@
 #include "text_editor.h"
 
+void clearBuffer(void);
+
 /**
  * main - Entry point
  *
@@ -7,10 +9,9 @@
  */
 int main(void)
 {
-	char input[100];
+	char *input = NULL;
+	size_t inputSize = 0;
 	int position;
-	int length;
-	char file_name[100];
 
 	TextContent text_content;
 
@@ -18,51 +19,65 @@ int main(void)
 
 	while (1)
 	{
-		displayText(&text_content);
-
 		printf("Enter a command (or q to quit): ");
-		fgets(input, sizeof(input), stdin);
-		input[strlen(input) - 1] = '\0';
-		printf("\n");
 
-		if (strcmp(input, "q") == 0)
+		if (getline(&input, &inputSize, stdin) == -1)
 		{
 			break;
 		}
-		else if (strcmp(input, "i") == 0)
+
+		if (strcmp(input, "q\n") == 0 || strcmp(input, "quit\n") == 0)
 		{
-			printf("Enter the text to insert and its position: ");
-			scanf("%s %d", input, &position);
-			fgets(input, sizeof(input), stdin);
-			input[strlen(input) - 1] = '\0';
+			break;
+		}
+		else if (strcmp(input, "i\n") == 0)
+		{
+			printf("Enter the text to insert: ");
+
+			if (getline(&input, &inputSize, stdin) == -1)
+			{
+				break;
+			}
+
+			printf("Enter the position to insert: ");
+			position = -1;
+
+			if (scanf("%d", &position) != 1)
+			{
+				position = text_content.numLines;
+				clearBuffer();
+			}
+
 			insertText(&text_content, position, input);
-		}
-		else if (strcmp(input, "d") == 0)
-		{
-			printf("Enter the position to delete and length: ");
-			scanf("%d %d", &position, &length);
-			deleteText(&text_content, position, length);
-		}
-		else if (strcmp(input, "w") == 0)
-		{
-			printf("Enter the text to write and file name: ");
-			scanf("%s %s", input, file_name);
-			saveTextToFile(&text_content, file_name);
-		}
-		else if (strcmp(input, "s") == 0)
-		{
-			printf("Enter the position to search: ");
-			scanf("%d", &position);
-			searchText(&text_content, position);
+
+			clearBuffer();
+
+			displayText(&text_content);
 		}
 		else
 		{
 			printf("Invalid command\n");
+			clearBuffer();
 		}
-
 	}
-	
+
+	free(input);
 	cleanupTextEditor(&text_content);
 
-	return 0;
+	return (0);
+}
+
+/**
+ * clearBuffer - Clears the input buffer
+ *
+ * Return: void
+ */
+void clearBuffer(void)
+{
+	int c;
+
+	while ((c = getchar()) != '\n' && c != EOF)
+	{
+		;
+	}
 }
