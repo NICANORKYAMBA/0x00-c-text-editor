@@ -1,11 +1,24 @@
 #include "text_editor.h"
 
-
+/**
+ * displayText - displays text in the editor
+ *
+ * @text: text to display
+ *
+ * Return: Void (Nothing)
+ */
 void displayText(const TextContent *text)
 {
-	if (text == NULL)
+	Line *currentLine;
+
+	if (!text)
 		return;
 
-	printf("%s", text->content);
-	printf("\n");
+	currentLine = text->firstLine;
+
+	while (currentLine)
+	{
+		printf("%s\n", currentLine->text);
+		currentLine = currentLine->next;
+	}
 }
