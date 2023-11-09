@@ -1,6 +1,12 @@
 #include "text_editor.h"
 
-
+/**
+ * cleanupTextEditor - cleans up the text editor.
+ *
+ * @editor: the text editor.
+ *
+ * Return: void.
+ */
 void cleanupTextEditor(TextContent *editor)
 {
 	Line *currentLine, *nextLine;

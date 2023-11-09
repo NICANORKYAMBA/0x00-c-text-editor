@@ -11,7 +11,7 @@ int main(void)
 {
 	char *input = NULL;
 	size_t inputSize = 0;
-	int position;
+	int position, count;
 
 	TextContent text_content;
 
@@ -49,6 +49,34 @@ int main(void)
 			}
 
 			insertText(&text_content, position, input);
+
+			clearBuffer();
+
+			displayText(&text_content);
+		}
+		else if (strcmp(input, "d\n") == 0)
+		{
+			printf("Enter the position to delete: ");
+			position = -1;
+
+			if (scanf("%d", &position) != 1)
+			{
+				position = text_content.numLines;
+				clearBuffer();
+				continue;
+			}
+
+			printf("Enter the number of characters to delete: ");
+			count = -1;
+
+			if (scanf("%d", &count) != 1)
+			{
+				count = 1;
+				clearBuffer();
+				continue;
+			}
+
+			deleteText(&text_content, position, count);
 
 			clearBuffer();
 
