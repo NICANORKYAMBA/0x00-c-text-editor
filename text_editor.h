@@ -39,7 +39,7 @@ void insertText(TextContent *text, int position, const char *line);
 void deleteText(TextContent *text, int position, int length);
 void saveTextToFile(const TextContent *text, const char *fileName);
 void cleanupTextEditor(TextContent *editor);
-void loadTextFromFile(TextContent *text, const char *filename);
+void loadTextFromFile(TextContent *text, const char *fileName);
 void appendText(TextContent *text, const char *line);
 void prependText(TextContent *text, const char *line);
 void replaceText(TextContent *text, int position, const char *line);

@@ -1,2 +1,5 @@
-Nicanor is a cool guy. He is such an amazing talent bro.
-Such an mamamamamam amamamamamama amamamamamaa a ajajasashasjaa sa sajsasasansah.
+Welcome to the Text Editor Sample File!
+This file is designed to help you test your text editor. It contains a variety of text, including different line lengths and styles.
+Feel free to explore the features of your text editor using this file. Insert, delete, and save changes to see how well your editor performs.
+Have fun testing, and feel free to modify this content as needed!
+Happy coding!

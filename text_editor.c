@@ -20,7 +20,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("Enter a command (or q to quit): ");
+		printf("\nEnter a command (or q to quit): ");
 
 		if (getline(&input, &inputSize, stdin) == -1)
 		{
@@ -99,6 +99,21 @@ int main(void)
 
 			saveTextToFile(&text_content, fileName);
 			printf("Text saved to %s\n", fileName);
+			displayText(&text_content);
+			clearBuffer();
+		}
+		else if (strcmp(input, "r\n") == 0)
+		{
+			printf("Enter the filename to load: ");
+
+			if (scanf("%99s", fileName) != 1)
+			{
+				clearBuffer();
+				continue;
+			}
+
+			loadTextFromFile(&text_content, fileName);
+			printf("Text loaded from %s\n", fileName);
 			clearBuffer();
 		}
 		else
