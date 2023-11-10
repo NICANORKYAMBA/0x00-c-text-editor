@@ -6,6 +6,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#define MAX_LINE_LENGTH 1024
+
 
 /**
  * struct Line - line of text in the text editor
@@ -25,27 +27,48 @@ typedef struct Line
  * @firstLine: first line in the text editor
  * @lastLine: last line in the text editor
  * @numLines: number of lines in the text editor
+ * @cursorCol: cursor column in the text editor
+ * @cursorRow: cursor row in the text editor
  */
 typedef struct TextContent
 {
 	Line *firstLine;
 	Line *lastLine;
 	int numLines;
+	int cursorCol;
+	int cursorRow;
 } TextContent;
 
 void initializeTextEditor(TextContent *text);
+
 void displayText(const TextContent *text);
+
 void cleanupTextEditor(TextContent *editor);
+
 void insertText(TextContent *text, int position, const char *line);
+
 void deleteText(TextContent *text, int position, int length);
+
 void saveTextToFile(const TextContent *text, const char *fileName);
+
 void loadTextFromFile(TextContent *text, const char *fileName);
+
 void editText(TextContent *text, int position, const char *newText);
+
+void moveCursor(TextContent *text, char direction);
+
+int getCurrentCol(TextContent *text);
+
+int getCurrentRow(TextContent *text);
+
+int getLineLength(TextContent *text, int numLines);
+
+int getCurrentPosition(TextContent *text);
+
 void appendText(TextContent *text, const char *line);
 void prependText(TextContent *text, const char *line);
 void replaceText(TextContent *text, int position, const char *line);
 void clearText(TextContent *text);
-void moveCursor(TextContent *text, int direction);
 void deleteWord(TextContent *text, int position);
 void insertWord(TextContent *text, int position);
 void moveWord(TextContent *text, int direction);

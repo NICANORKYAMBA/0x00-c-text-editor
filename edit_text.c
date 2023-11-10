@@ -25,8 +25,6 @@ void editText(TextContent *text, int position, const char *newText)
 
 	current = text->firstLine;
 
-	printf("Number of lines loaded: %d\n", text->numLines);
-
 	for (i = 0; i < position; i++)
 	{
 		if (!current)

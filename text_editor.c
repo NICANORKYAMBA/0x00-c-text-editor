@@ -11,8 +11,8 @@ int main(void)
 {
 	char *input = NULL;
 	size_t inputSize = 0;
-	int position, count;
-	char fileName[100], newText[1024];
+	int position, count, currentRow, currentCol, currentPosition;
+	char fileName[100], newText[1024], direction;
 
 	TextContent text_content;
 
@@ -120,13 +120,29 @@ int main(void)
 		{
 			displayText(&text_content);
 
-			printf("Enter the position to edit: ");
+			printf("Enter the direction to move the cursor (U, D, L, R): ");
 
-			if (scanf("%d", &position) != 1 || position < 0 || position >= text_content.numLines)
+			if (scanf(" %c", &direction) != 1)
 			{
 				clearBuffer();
 				continue;
 			}
+
+			currentRow = getCurrentRow(&text_content);
+			currentCol = getCurrentCol(&text_content);
+
+			moveCursor(&text_content, direction);
+
+			if ((currentRow == getCurrentRow(&text_content)) &&
+					(currentCol == getCurrentCol(&text_content)))
+			{
+				printf("Error: Cursor movement failed\n");
+				clearBuffer();
+				continue;
+			}
+
+			displayText(&text_content);
+			clearBuffer();
 
 			printf("Enter the new text: ");
 
@@ -136,7 +152,8 @@ int main(void)
 				continue;
 			}
 
-			editText(&text_content, position, newText);
+			currentPosition = getCurrentPosition(&text_content);
+			editText(&text_content, currentPosition, newText);
 			displayText(&text_content);
 			clearBuffer();
 		}
