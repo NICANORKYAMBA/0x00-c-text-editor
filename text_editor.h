@@ -37,7 +37,7 @@ void initializeTextEditor(TextContent *text);
 void displayText(const TextContent *text);
 void insertText(TextContent *text, int position, const char *line);
 void deleteText(TextContent *text, int position, int length);
-void saveTextToFile(const TextContent *text, const char *filename);
+void saveTextToFile(const TextContent *text, const char *fileName);
 void cleanupTextEditor(TextContent *editor);
 void loadTextFromFile(TextContent *text, const char *filename);
 void appendText(TextContent *text, const char *line);

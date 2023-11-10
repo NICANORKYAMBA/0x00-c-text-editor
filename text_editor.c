@@ -12,6 +12,7 @@ int main(void)
 	char *input = NULL;
 	size_t inputSize = 0;
 	int position, count;
+	char fileName[100];
 
 	TextContent text_content;
 
@@ -29,6 +30,10 @@ int main(void)
 		if (strcmp(input, "q\n") == 0 || strcmp(input, "quit\n") == 0)
 		{
 			break;
+		}
+		else if (strcmp(input, "s\n") == 0)
+		{
+			displayText(&text_content);
 		}
 		else if (strcmp(input, "i\n") == 0)
 		{
@@ -81,6 +86,20 @@ int main(void)
 			clearBuffer();
 
 			displayText(&text_content);
+		}
+		else if (strcmp(input, "w\n") == 0)
+		{
+			printf("Enter the filename to save: ");
+
+			if (scanf("%99s", fileName) != 1)
+			{
+				clearBuffer();
+				continue;
+			}
+
+			saveTextToFile(&text_content, fileName);
+			printf("Text saved to %s\n", fileName);
+			clearBuffer();
 		}
 		else
 		{
