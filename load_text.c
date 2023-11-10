@@ -1,5 +1,9 @@
 #include "text_editor.h"
 
+FILE *openFile(const char *fileName);
+void insertLine(TextContent *text, const char *line);
+void insertNewLine(TextContent *text);
+
 /**
  * loadTextFromFile - reads a text file and loads it into the text editor
  *
@@ -12,7 +16,8 @@ void loadTextFromFile(TextContent *text, const char *fileName)
 {
 	FILE *file;
 	char buffer[1024];
-	size_t len = 0;
+	size_t len;
+	char *fullStop;
 
 	if (!text || !fileName)
 	{
@@ -20,11 +25,10 @@ void loadTextFromFile(TextContent *text, const char *fileName)
 		return;
 	}
 
-	file = fopen(fileName, "r");
+	file = openFile(fileName);
 
 	if (!file)
 	{
-		perror("Error opening file");
 		return;
 	}
 
@@ -40,9 +44,65 @@ void loadTextFromFile(TextContent *text, const char *fileName)
 			buffer[len - 1] = '\0';
 		}
 
-		insertText(text, text->numLines, buffer);
-		insertText(text, text->numLines, "\n");
+		fullStop = strchr(buffer, '.');
+
+		if (fullStop)
+		{
+			insertLine(text, buffer);
+			insertNewLine(text);
+			insertLine(text, fullStop + 1);
+			insertNewLine(text);
+		}
+		else
+		{
+			insertLine(text, buffer);
+			insertNewLine(text);
+		}
 	}
 
 	fclose(file);
+}
+
+/**
+ * openFile - opens a file for reading
+ *
+ * @fileName: name of the file to open
+ *
+ * Return: pointer to the file
+ */
+FILE *openFile(const char *fileName)
+{
+	FILE *file = fopen(fileName, "r");
+
+	if (!file)
+	{
+		perror("Error opening file");
+	}
+
+	return (file);
+}
+
+/**
+ * insertLine - inserts a line into the text editor
+ *
+ * @text: pointer to the TextContent struct
+ * @line: line to insert
+ *
+ * Return: void
+ */
+void insertLine(TextContent *text, const char *line)
+{
+	insertText(text, text->numLines, line);
+}
+
+/**
+ * insertNewLine - inserts a new line into the text editor
+ *
+ * @text: pointer to the TextContent struct
+ *
+ * Return: void
+ */
+void insertNewLine(TextContent *text)
+{
+	insertText(text, text->numLines, "\n");
 }

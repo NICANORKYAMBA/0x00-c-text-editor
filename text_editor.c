@@ -12,7 +12,7 @@ int main(void)
 	char *input = NULL;
 	size_t inputSize = 0;
 	int position, count;
-	char fileName[100];
+	char fileName[100], newText[1024];
 
 	TextContent text_content;
 
@@ -114,6 +114,30 @@ int main(void)
 
 			loadTextFromFile(&text_content, fileName);
 			printf("Text loaded from %s\n", fileName);
+			clearBuffer();
+		}
+		else if (strcmp(input, "e\n") == 0)
+		{
+			displayText(&text_content);
+
+			printf("Enter the position to edit: ");
+
+			if (scanf("%d", &position) != 1 || position < 0 || position >= text_content.numLines)
+			{
+				clearBuffer();
+				continue;
+			}
+
+			printf("Enter the new text: ");
+
+			if (scanf(" %[^\n]", newText) != 1)
+			{
+				clearBuffer();
+				continue;
+			}
+
+			editText(&text_content, position, newText);
+			displayText(&text_content);
 			clearBuffer();
 		}
 		else

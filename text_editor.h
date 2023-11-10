@@ -35,17 +35,17 @@ typedef struct TextContent
 
 void initializeTextEditor(TextContent *text);
 void displayText(const TextContent *text);
+void cleanupTextEditor(TextContent *editor);
 void insertText(TextContent *text, int position, const char *line);
 void deleteText(TextContent *text, int position, int length);
 void saveTextToFile(const TextContent *text, const char *fileName);
-void cleanupTextEditor(TextContent *editor);
 void loadTextFromFile(TextContent *text, const char *fileName);
+void editText(TextContent *text, int position, const char *newText);
 void appendText(TextContent *text, const char *line);
 void prependText(TextContent *text, const char *line);
 void replaceText(TextContent *text, int position, const char *line);
 void clearText(TextContent *text);
 void moveCursor(TextContent *text, int direction);
-void insertLine(TextContent *text, int position);
 void deleteWord(TextContent *text, int position);
 void insertWord(TextContent *text, int position);
 void moveWord(TextContent *text, int direction);
