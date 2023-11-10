@@ -11,6 +11,6 @@ int getCurrentPosition(TextContent *text)
 {
 	int currentRow = getCurrentRow(text);
 	int currentCol = getCurrentCol(text);
-	
+
 	return ((currentRow - 1) * (MAX_LINE_LENGTH + 1) + currentCol);
 }

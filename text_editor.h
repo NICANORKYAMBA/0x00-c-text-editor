@@ -65,6 +65,8 @@ int getLineLength(TextContent *text, int numLines);
 
 int getCurrentPosition(TextContent *text);
 
+void processCommand(TextContent *text_content, char *input);
+
 void appendText(TextContent *text, const char *line);
 void prependText(TextContent *text, const char *line);
 void replaceText(TextContent *text, int position, const char *line);

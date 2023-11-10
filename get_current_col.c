@@ -1,7 +1,7 @@
 #include "text_editor.h"
 
 /**
- * getCurrentColumn - Gets the current column of the cursor.
+ * getCurrentCol - Gets the current column of the cursor.
  *
  * @text: Pointer to the TextContent struct.
  *

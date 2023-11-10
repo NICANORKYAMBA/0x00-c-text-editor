@@ -4,6 +4,7 @@ void moveUp(TextContent *text);
 void moveDown(TextContent *text);
 void moveLeft(TextContent *text);
 void moveRight(TextContent *text, int numCols);
+void handleError(const char *message);
 Line *getCurrentLine(TextContent *text, int row);
 void moveToPosition(TextContent *text, int targetRow, int targetCol);
 
@@ -80,20 +81,24 @@ void moveLeft(TextContent *text)
 	int currentCol;
 
 	currentCol = getCurrentCol(text);
-	currentRow = getCurrentRow(text);
 
 	if (currentCol > 0)
 	{
-		moveToPosition(text, currentRow, currentCol - 1);
-	}
-	else if (currentRow > 1)
-	{
-		moveUp(text);
-		moveToPosition(text, currentRow - 1, getLineLength(text, currentRow - 1));
+		moveToPosition(text, getCurrentRow(text), currentCol - 1);
 	}
 	else
 	{
-		fprintf(stderr, "Error: Cannot move left\n");
+		currentRow = getCurrentRow(text);
+
+		if (currentRow > 1)
+		{
+			moveUp(text);
+			moveToPosition(text, currentRow - 1, getLineLength(text, currentRow - 1));
+		}
+		else
+		{
+			handleError("Error: Cannot move left");
+		}
 	}
 }
 
@@ -143,11 +148,12 @@ void moveRight(TextContent *text, int numCols)
 
 	if (!currentLine)
 	{
-		fprintf(stderr, "Invalid position: (%d, %d)\n", currentRow, currentCol);
-		return;
+		handleError("Error: Invalid target position");
 	}
 
 	lineLength = strlen(currentLine->text);
+
+	targetCol = (currentCol + 1 > numCols) ? numCols : currentCol + 1;
 
 	if (currentCol == lineLength)
 	{
@@ -158,13 +164,11 @@ void moveRight(TextContent *text, int numCols)
 		}
 		else
 		{
-			fprintf(stderr, "Error: Cannot move right\n");
+			handleError("Error: Cannot move right");
 		}
 	}
 	else
 	{
-		targetCol = currentCol + 1;
-		targetCol = (targetCol > numCols) ? numCols : targetCol;
 		moveToPosition(text, currentRow, targetCol);
 	}
 }
