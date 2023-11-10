@@ -1,5 +1,8 @@
 #include "text_editor.h"
 
+static Line *findLine(TextContent *text, int position);
+static void editLineText(Line *line, const char *newText);
+
 /**
  * editText - edits the text at a given position
  *	in the text editor
@@ -12,10 +15,7 @@
  */
 void editText(TextContent *text, int position, const char *newText)
 {
-	Line *current;
-	int i;
-	size_t len;
-	char *editableText;
+	Line *lineToEdit = NULL;
 
 	if (!text || position < 0 || position > text->numLines || !newText)
 	{
@@ -23,21 +23,35 @@ void editText(TextContent *text, int position, const char *newText)
 		return;
 	}
 
-	current = text->firstLine;
+	lineToEdit = findLine(text, position);
 
-	for (i = 0; i < position; i++)
+	if (lineToEdit)
 	{
-		if (!current)
-		{
-			fprintf(stderr, "Invalid position\n");
-			return;
-		}
+		editLineText(lineToEdit, newText);
+	}
+}
 
-		current = current->next;
+/**
+ * editLineText - edits the text of a given line
+ *
+ * @line: pointer to the Line struct
+ * @newText: new text to replace the old text
+ *
+ * Return: void
+ */
+static void editLineText(Line *line, const char *newText)
+{
+	char *editableText;
+	size_t len;
+
+	if (!line || !newText)
+	{
+		fprintf(stderr, "Invalid arguments\n");
+		return;
 	}
 
-	free(current->text);
-	current->text = NULL;
+	free(line->text);
+	line->text = NULL;
 
 	editableText = strdup(newText);
 
@@ -54,11 +68,42 @@ void editText(TextContent *text, int position, const char *newText)
 		editableText[len - 1] = '\0';
 	}
 
-	current->text = editableText;
+	line->text = editableText;
 
-	if (!current->text)
+	if (!line->text)
 	{
 		perror("Error duplicating text");
 		exit(EXIT_FAILURE);
 	}
+}
+
+/**
+ * findLine - finds the line at a given position
+ *
+ * @text: pointer to the TextContent struct
+ * @position: position of the line to find
+ *
+ * Return: pointer to the Line struct
+ * or NULL if not found
+ * or invalid arguments
+ */
+static Line *findLine(TextContent *text, int position)
+{
+	Line *current;
+	int i;
+
+	current = text->firstLine;
+
+	for (i = 0; i < position; i++)
+	{
+		if (!current)
+		{
+			fprintf(stderr, "Invalid arguments\n");
+			return (NULL);
+		}
+
+		current = current->next;
+	}
+
+	return (current);
 }
